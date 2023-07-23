@@ -57,17 +57,7 @@ function signIn() {
         </li>
 
         <li
-          class="
-                        relative
-                        flex
-                        items-center
-                        justify-between
-                        py-2.5
-                        border-b
-                        px-3
-                        hover:bg-gray-100
-                        cursor-pointer
-                    "
+          class="relative flex items-center justify-between py-2.5 border-b px-3 hover:bg-gray-100 cursor-pointer"
           @click="goTo('shoppingcart')"
         >
           <div class=" flex items-center text-[20px] font-semibold">
@@ -75,17 +65,7 @@ function signIn() {
             <span class="pl-4">Cart</span>
           </div>
           <div
-            class="
-                            flex
-                            items-center
-                            justify-center
-                            bg-[#FF4646]
-                            h-[35px]
-                            min-w-[35px]
-                            text-lg
-                            text-white
-                            rounded-full
-                        "
+            class="flex items-center justify-center bg-[#FF4646] h-[35px] min-w-[35px] text-lg text-white rounded-full"
           >
             {{ userStore.cart.length }}
           </div>
