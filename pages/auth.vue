@@ -5,7 +5,6 @@ async function login(prov: 'google' | 'github') {
 watchEffect(() => {
   // todo:
 })
-definePageMeta({ layout: 'main' })
 </script>
 
 <template>
