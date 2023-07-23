@@ -111,7 +111,7 @@ const isCartHover = ref(false)
         <NuxtLink class="flex items-center" to="/cart">
           <button class="relative md:block hidden" @mouseenter="isCartHover = true" @mouseleave="isCartHover = false">
             <span class="absolute flex items-center justify-center -right-[3px] top-0 bg-[#FF4646] h-[17px] min-w-[17px] text-xs text-white px-0.5 rounded-full">
-              0
+              {{ userStore.cart.length }}
             </span>
             <div class="min-w-[40px]">
               <Icon
