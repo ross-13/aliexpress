@@ -18,6 +18,7 @@ const products = [
 ]
 onMounted(() => {
   isProcessing.value = true
+  setTimeout(() => userStore.isLoading = false, 200)
 
   userStore.checkout.forEach((item: any) => {
     total.value += item.price

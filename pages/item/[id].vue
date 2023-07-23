@@ -32,6 +32,7 @@ onMounted(() => {
     currentImage.value = 'https://picsum.photos/id/14/800/800'
     images.value[0] = 'https://picsum.photos/id/14/800/800'
   })
+  setTimeout(() => userStore.isLoading = false, 200)
 })
 
 definePageMeta({
