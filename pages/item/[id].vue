@@ -1,21 +1,30 @@
 <script setup lang="ts">
 import { useUserStore } from '~/stores/user'
 
-const currentImage = ref<string | null>(null)
 const route = useRoute()
 const userStore = useUserStore()
-const priceComputed = computed(() => '26.50')
+
+const currentImage = ref<string | null>(null)
+const product = ref<any>(null)
+
+const priceComputed = computed(() => {
+  if (product.value && product.value.data)
+    return product.value.data.price / 100
+
+  return '0.00'
+})
+
 const isInCart = computed(() => {
   let res = false
   userStore.cart.forEach((prod: any) => {
-    if (route.params.id === prod.id)
+    if (+route.params.id === prod.id)
       res = true
   })
-
   return res
 })
+
 function addToCart() {
-  alert('Adding to cart')
+  userStore.cart.push(product.value.data)
 }
 
 const images = ref([
@@ -27,12 +36,16 @@ const images = ref([
   'https://picsum.photos/id/144/800/800',
 ])
 
-onMounted(() => {
-  watchEffect(() => {
-    currentImage.value = 'https://picsum.photos/id/14/800/800'
-    images.value[0] = 'https://picsum.photos/id/14/800/800'
-  })
-  setTimeout(() => userStore.isLoading = false, 200)
+onBeforeMount(async () => {
+  product.value = await useFetch(`/api/prisma/get-product-by-id/${route.params.id}`)
+})
+
+watchEffect(() => {
+  if (product.value && product.value.data) {
+    currentImage.value = product.value.data.url
+    images.value[0] = product.value.data.url
+    userStore.isLoading = false
+  }
 })
 
 definePageMeta({
@@ -61,12 +74,12 @@ definePageMeta({
       </div>
 
       <div class="md:w-[60%] bg-white p-3 rounded-lg">
-        <div v-if="true">
+        <div v-if="product && product.data">
           <p class="mb-2">
-            Title
+            {{ product.data.title }}
           </p>
           <p class="font-light text-[12px] mb-2">
-            Description Section
+            {{ product.data.description }}
           </p>
         </div>
 
