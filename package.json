@@ -17,13 +17,13 @@
     "@pinia/nuxt": "^0.4.11",
     "@prisma/client": "^5.0.0",
     "@stripe/stripe-js": "^1.54.1",
+    "@vueuse/core": "^10.2.1",
     "nuxt": "^3.6.3",
     "nuxt-icon": "^0.4.2",
     "nuxt-lodash": "^2.5.0",
     "pinia": "^2.1.4",
     "prisma": "^5.0.0",
     "stripe": "^12.13.0"
-
   },
   "devDependencies": {
     "@antfu/eslint-config": "^0.39.8",
