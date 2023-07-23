@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import { useUserStore } from '~/stores/user'
+
+const userStore = useUserStore()
 const products = [
   { id: 1, title: 'Title 1', description: 'This is description 1', url: 'https://picsum.photos/id/7/800/800', price: 9999 },
   { id: 2, title: 'Title 2', description: 'This is description 2', url: 'https://picsum.photos/id/71/800/800', price: 1234 },
@@ -14,6 +17,9 @@ const products = [
   { id: 12, title: 'Title 12', description: 'This is description 12', url: 'https://picsum.photos/id/81/800/800', price: 4 },
 ]
 
+onBeforeMount(async () => {
+  setTimeout(() => userStore.isLoading = false, 1000)
+})
 definePageMeta({
   layout: 'main',
 })
