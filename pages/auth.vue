@@ -1,10 +1,19 @@
 <script lang="ts" setup>
+const client = useSupabaseClient()
+const user = useSupabaseUser()
+
 async function login(prov: 'google' | 'github') {
-  // login by provider
+  const { data, error } = await client.auth.signInWithOAuth({
+    provider: prov,
+    options: {
+      redirectTo: window.location.origin,
+    },
+  })
 }
-watchEffect(() => {
-  // todo:
-})
+// watchEffect(() => {
+//   if (user.value)
+//     return navigateTo('/')
+// })
 </script>
 
 <template>
@@ -14,7 +23,6 @@ watchEffect(() => {
         <img width="170" src="/AliExpress-logo.png">
       </NuxtLink>
     </div>
-
     <div class="max-w-[400px] mx-auto px-2">
       <div class="text-center my-6">
         Login / Register
