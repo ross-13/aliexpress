@@ -2,6 +2,7 @@
 import { useUserStore } from '~/stores/user'
 
 const userStore = useUserStore()
+const user = useSupabaseUser()
 const route = useRoute()
 
 const stripe = null
@@ -16,14 +17,6 @@ const products = [
   { id: 1, title: 'Title 1', description: 'This is description 1', url: 'https://picsum.photos/id/7/800/800', price: 9999 },
   { id: 2, title: 'Title 2', description: 'This is description 2', url: 'https://picsum.photos/id/71/800/800', price: 1234 },
 ]
-onMounted(() => {
-  isProcessing.value = true
-  setTimeout(() => userStore.isLoading = false, 200)
-
-  userStore.checkout.forEach((item: any) => {
-    total.value += item.price
-  })
-})
 
 async function stripeInit() {
 
@@ -40,6 +33,31 @@ async function createOrder(stripeId: string) {
 function showError(errorMessage: string) {
 
 }
+
+onBeforeMount(async () => {
+  if (userStore.checkout.length < 1)
+    return navigateTo('/cart')
+
+  total.value = 0.00
+
+  if (user.value) {
+    currentAddress.value = await useFetch(`/api/prisma/get-address-by-user/${user.value.id}`)
+    setTimeout(() => userStore.isLoading = false, 200)
+  }
+})
+
+onMounted(() => {
+  isProcessing.value = true
+
+  userStore.checkout.forEach((item: any) => {
+    total.value += item.price
+  })
+})
+
+watchEffect(() => {
+  if (route.fullPath === '/checkout' && !user.value)
+    return navigateTo('/auth')
+})
 
 watch(() => total.value, () => {
   if (total.value > 0)
@@ -58,7 +76,7 @@ definePageMeta({ layout: 'main' })
             Shipping Adress
           </div>
 
-          <div v-if="false">
+          <div v-if="currentAddress && currentAddress.data">
             <NuxtLink to="/address" class="flex items-center pb-2 text-blue-500 hover:text-red-400">
               <Icon name="mdi:plus" size="18" class="mr-2" />
               Update Address
@@ -72,31 +90,31 @@ definePageMeta({ layout: 'main' })
                 <li class="flex items-center gap-2">
                   <div>Contact name:</div>
                   <div class="font-bold">
-                    Test name
+                    {{ currentAddress.data.name }}
                   </div>
                 </li>
                 <li class="flex items-center gap-2">
                   <div>Address:</div>
                   <div class="font-bold">
-                    Test address
+                    {{ currentAddress.data.address }}
                   </div>
                 </li>
                 <li class="flex items-center gap-2">
                   <div>Zip Code:</div>
                   <div class="font-bold">
-                    test zipcode
+                    {{ currentAddress.data.zipcode }}
                   </div>
                 </li>
                 <li class="flex items-center gap-2">
                   <div>City:</div>
                   <div class="font-bold">
-                    Test city
+                    {{ currentAddress.data.city }}
                   </div>
                 </li>
                 <li class="flex items-center gap-2">
                   <div>Country:</div>
                   <div class="font-bold">
-                    Ukraine
+                    {{ currentAddress.data.country }}
                   </div>
                 </li>
               </ul>
@@ -114,7 +132,7 @@ definePageMeta({ layout: 'main' })
         </div>
 
         <div id="Items" class="bg-white rounded-lg p-4 mt-4">
-          <div v-for="product in products" :key="product.id">
+          <div v-for="product in userStore.checkout" :key="product.id">
             <CheckoutItem :product="product" />
           </div>
         </div>

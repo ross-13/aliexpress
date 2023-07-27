@@ -2,30 +2,48 @@
 import { useUserStore } from '~/stores/user'
 
 const userStore = useUserStore()
-const products = [
-  { id: 1, title: 'Title 1', description: 'This is description 1', url: 'https://picsum.photos/id/7/800/800', price: 9999 },
-  { id: 2, title: 'Title 2', description: 'This is description 2', url: 'https://picsum.photos/id/71/800/800', price: 1234 },
-]
+const user = useSupabaseUser()
+
+const selectedArray = ref([])
+
+onMounted(() => {
+  setTimeout(() => userStore.isLoading = false, 200)
+})
+
 const cards = ref([
   'visa.png',
   'mastercard.png',
   'paypal.png',
   'applepay.png',
 ])
-const selectedArray = ref<any>([])
+
 const totalPriceComputed = computed(() => {
   let price = 0
-  userStore.cart.forEach((c: any) => {
-    price += c.price
+  userStore.cart.forEach((prod) => {
+    price += prod.price
   })
   return price / 100
 })
 
+function selectedRadioFunc(e) {
+  if (!selectedArray.value.length) {
+    selectedArray.value.push(e)
+    return
+  }
+
+  selectedArray.value.forEach((item, index) => {
+    if (e.id != item.id)
+      selectedArray.value.push(e)
+    else
+      selectedArray.value.splice(index, 1)
+  })
+}
+
 function goToCheckout() {
-  const ids: any = []
+  const ids = []
   userStore.checkout = []
 
-  selectedArray.value.forEach((item: any) => ids.push(item.id))
+  selectedArray.value.forEach(item => ids.push(item.id))
 
   const res = userStore.cart.filter((item) => {
     return ids.includes(item.id)
@@ -35,29 +53,13 @@ function goToCheckout() {
 
   return navigateTo('/checkout')
 }
-function selectedRadioFunc(e: any) {
-  if (!selectedArray.value.length) {
-    selectedArray.value.push()
-    return
-  }
 
-  selectedArray.value.forEach((item: any, index: any) => {
-    if (e.id !== item.id)
-      selectedArray.value.push(e)
-
-    else
-      selectedArray.value.splice(index, 1)
-  })
-}
-onMounted(() => {
-  setTimeout(() => userStore.isLoading = false, 200)
-})
 definePageMeta({ layout: 'main' })
 </script>
 
 <template>
   <div id="ShoppingCartPage" class="mt-4 max-w-[1200px] mx-auto px-2">
-    <div v-if="false" class="h-[500px] flex items-center justify-center">
+    <div v-if="!userStore.cart.length" class="h-[500px] flex items-center justify-center">
       <div class="pt-20">
         <img
           class="mx-auto"
@@ -69,7 +71,7 @@ definePageMeta({ layout: 'main' })
           No items yet?
         </div>
 
-        <div v-if="true" class="flex text-center">
+        <div v-if="!user" class="flex text-center">
           <NuxtLink
             to="/auth"
             class="bg-[#FD374F] w-full text-white text-[21px] font-semibold p-1.5 rounded-full mt-4"
@@ -95,7 +97,7 @@ definePageMeta({ layout: 'main' })
         </div>
 
         <div id="Items" class="bg-white rounded-lg p-4 mt-4">
-          <div v-for="product in products" :key="product.id">
+          <div v-for="product in userStore.cart" :key="product.id">
             <CartItem
               :product="product"
               :selected-array="selectedArray"
