@@ -115,7 +115,7 @@ watch(() => searchItem.value, async () => {
             <div class="absolute bg-white max-w-[700px] h-auto w-full">
               <div v-if="items && items.data" class="p-1">
                 <template v-for="item in items.data" :key="item.id">
-                  <NuxtLink to="`/item/${item.id}`" class="flex items-center justify-between w-full cursor-pointer hover:bg-gray-100">
+                  <NuxtLink :to="`/item/${item.id}`" class="flex items-center justify-between w-full cursor-pointer hover:bg-gray-100">
                     <div class="flex items-center">
                       <img class="rounded-md" width="40" :src="item.url">
                       <div class="truncate ml-2">
