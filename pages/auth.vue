@@ -10,10 +10,10 @@ async function login(prov: 'google' | 'github') {
     },
   })
 }
-// watchEffect(() => {
-//   if (user.value)
-//     return navigateTo('/')
-// })
+watchEffect(() => {
+  if (user.value)
+    return navigateTo('/')
+})
 </script>
 
 <template>
