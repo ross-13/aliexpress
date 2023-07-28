@@ -31,8 +31,8 @@ function selectedRadioFunc(e) {
     return
   }
 
-  selectedArray.value.forEach((item, index) => {
-    if (e.id != item.id)
+  selectedArray.value.forEach((item: IProduct, index) => {
+    if (e.id !== item.id)
       selectedArray.value.push(e)
     else
       selectedArray.value.splice(index, 1)
@@ -40,10 +40,10 @@ function selectedRadioFunc(e) {
 }
 
 function goToCheckout() {
-  const ids = []
+  const ids: number[] = []
   userStore.checkout = []
 
-  selectedArray.value.forEach(item => ids.push(item.id))
+  selectedArray.value.forEach((item: IProduct) => ids.push(item.id))
 
   const res = userStore.cart.filter((item) => {
     return ids.includes(item.id)
@@ -86,7 +86,7 @@ definePageMeta({ layout: 'main' })
       <div class="md:w-[65%]">
         <div class="bg-white rounded-lg p-4">
           <div class="text-2xl font-bold mb-2">
-            Shopping Cart (0)
+            Shopping Cart ({{ userStore.cart.length }})
           </div>
         </div>
 

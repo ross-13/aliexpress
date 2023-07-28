@@ -10,4 +10,17 @@ export default defineNuxtConfig({
     '@nuxtjs/tailwindcss',
     '@nuxtjs/supabase',
   ],
+  runtimeConfig: {
+    public: {
+      // eslint-disable-next-line n/prefer-global/process
+      stripePk: process.env.STRIPE_PK_KEY,
+    },
+  },
+  app: {
+    head: {
+      script: [
+        { src: 'https://js.stripe.com/v3/', defer: true },
+      ],
+    },
+  },
 })
