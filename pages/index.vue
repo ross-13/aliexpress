@@ -2,7 +2,7 @@
 import { useUserStore } from '~/stores/user'
 
 const userStore = useUserStore()
-const products = ref<any>(null)
+const products = ref<IProduct[] | null>(null)
 
 onBeforeMount(async () => {
   userStore.isLoading = true

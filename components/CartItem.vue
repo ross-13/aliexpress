@@ -9,7 +9,7 @@ const { product, selectedArray } = toRefs(props)
 const isHover = ref(false)
 const isSelected = ref(false)
 function removeFromCart() {
-  userStore.cart.forEach((prod: any, index) => {
+  userStore.cart.forEach((prod: IProduct, index) => {
     if (prod.id === product?.value.id)
       userStore.cart.splice(index, 1)
   })

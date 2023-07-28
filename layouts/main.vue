@@ -9,7 +9,7 @@ const isAccountMenu = ref(false)
 const searchItem = ref('')
 const isSearching = ref(false)
 const isCartHover = ref(false)
-const items = ref<any>(null)
+const items = ref<IProduct[] | null>(null)
 
 const searchByName = useDebounce(async () => {
   isSearching.value = true

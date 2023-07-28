@@ -5,7 +5,7 @@ const route = useRoute()
 const userStore = useUserStore()
 
 const currentImage = ref<string | null>(null)
-const product = ref<any>(null)
+const product = ref<IProduct | null>(null)
 
 const priceComputed = computed(() => {
   if (product.value && product.value.data)
@@ -16,7 +16,7 @@ const priceComputed = computed(() => {
 
 const isInCart = computed(() => {
   let res = false
-  userStore.cart.forEach((prod: any) => {
+  userStore.cart.forEach((prod: IProduct) => {
     if (+route.params.id === prod.id)
       res = true
   })

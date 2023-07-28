@@ -17,7 +17,7 @@ export default defineEventHandler(async (event) => {
     },
   })
 
-  body.products.forEach(async (prod: { id: any }) => {
+  body.products.forEach(async (prod: IProduct) => {
     await prisma.orderItem.create({
       data: {
         orderId: order.id,

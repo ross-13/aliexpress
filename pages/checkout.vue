@@ -11,12 +11,8 @@ const card = null
 const form = null
 const total = ref(0)
 const clientSecret = null
-const currentAddress = ref<any | null>(null)
+const currentAddress = ref<IAddress | null>(null)
 const isProcessing = ref(false)
-const products = [
-  { id: 1, title: 'Title 1', description: 'This is description 1', url: 'https://picsum.photos/id/7/800/800', price: 9999 },
-  { id: 2, title: 'Title 2', description: 'This is description 2', url: 'https://picsum.photos/id/71/800/800', price: 1234 },
-]
 
 async function stripeInit() {
 
@@ -41,7 +37,7 @@ onBeforeMount(async () => {
   total.value = 0.00
 
   if (user.value) {
-    currentAddress.value = await useFetch(`/api/prisma/get-address-by-user/${user.value.id}`)
+    currentAddress.value = await useFetch<IAddress>(`/api/prisma/get-address-by-user/${user.value.id}`)
     setTimeout(() => userStore.isLoading = false, 200)
   }
 })
@@ -49,7 +45,7 @@ onBeforeMount(async () => {
 onMounted(() => {
   isProcessing.value = true
 
-  userStore.checkout.forEach((item: any) => {
+  userStore.checkout.forEach((item: IProduct) => {
     total.value += item.price
   })
 })
