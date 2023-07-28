@@ -95,7 +95,7 @@ async function submit() {
 watchEffect(async () => {
   currentAddress.value = await useFetch(`/api/prisma/get-address-by-user/${user.value?.id}`)
 
-  if (currentAddress.value.data) {
+  if (currentAddress?.value?.data) {
     contactName.value = currentAddress.value.data.name
     address.value = currentAddress.value.data.address
     zipCode.value = currentAddress.value.data.zipCode

@@ -3,11 +3,11 @@ const props = defineProps(['product'])
 const { product } = toRefs(props)
 
 const priceComputed = computed(() => {
-  return product.value.price / 100
+  return product?.value.price / 100
 })
 
 const oldPriceComputed = computed(() => {
-  const res = (product.value.price + (product.value.price / 20)) / 100
+  const res = (product?.value.price + (product?.value.price / 20)) / 100
   return res.toFixed(2)
 })
 </script>
