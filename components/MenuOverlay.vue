@@ -1,12 +1,15 @@
 <script lang="ts" setup>
 import { useUserStore } from '~/stores/user'
 
+const client = useSupabaseAuthClient()
 const userStore = useUserStore()
+
 function goTo(url: string) {
   userStore.isMenuOverlay = false
   return navigateTo(`/${url}`)
 }
 function signOut() {
+  client.auth.signOut()
   userStore.isMenuOverlay = false
   return navigateTo('/')
 }
